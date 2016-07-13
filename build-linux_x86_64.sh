@@ -79,6 +79,18 @@ autoconf
 # Compile!
 make -j$(( $(nproc) -1))
 
+# Make vvp static
+cd vvp
+make clean
+make -j$(( $(nproc) -1)) LDFLAGS='-rdynamic -static'
+cd ..
+
+# Make iverilog static
+cd driver
+make clean
+make -j$(( $(nproc) -1)) LDFLAGS=' -static'
+cd ..
+
 # Copy the dev files into $BUILD_DIR/include $BUILD_DIR/lbs
 make install
 
