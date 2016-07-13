@@ -6,8 +6,8 @@ BUILD_DIR=build_$ARCH
 PACKNAME=toolchain-iverilog-$ARCH-$VERSION
 TARBALL=$PACKNAME.tar.bz2
 
-# Build only iverilog binary
-BUILD_ONLY_IVERILOG_BIN=1
+# Toolchain name
+NAME=toolchain-iverilog
 
 # IVERILOG
 GIT_REPO=https://github.com/steveicarus/iverilog/archive
@@ -16,7 +16,7 @@ FILENAME_TAR=v10_1.tar.gz
 
 # Store current dir
 WORK=$PWD
-PREFIX=$WORK/$BUILD_DIR
+PREFIX=$WORK/$PACK_DIR/$BUILD_DIR/$NAME
 
 # -- TARGET: CLEAN. Remove the build dir and the generated packages
 # --  then exit
@@ -42,7 +42,7 @@ mkdir -p $UPSTREAM
 # Create the packages directory
 mkdir -p $PACK_DIR
 mkdir -p $PACK_DIR/$BUILD_DIR
-mkdir -p $PACK_DIR/$BUILD_DIR/bin
+mkdir -p $PACK_DIR/$BUILD_DIR/$NAME
 
 # Create the build dir
 mkdir -p $BUILD_DIR
@@ -76,36 +76,15 @@ autoconf
 # Prepare for building
 ./configure --prefix=$PREFIX
 
-if [ $BUILD_ONLY_IVERILOG_BIN == "1" ]; then
+# Compile!
+make -j$(( $(nproc) -1))
 
-  # Compile!
-  make -j$(( $(nproc) -1))
-
-  #-- Build only static iverilog binary
-  cd driver
-
-  # Clean non-static binary
-  make clean
-
-  # Compile!
-  make -j$(( $(nproc) -1)) LDFLAGS=-static
-
-  # Copy the binary
-  cp iverilog $WORK/$PACK_DIR/$BUILD_DIR/bin/iverilog
-
-else
-
-  # Compile!
-  make -j$(( $(nproc) -1))
-
-  # Copy the dev files into $BUILD_DIR/include $BUILD_DIR/lbs
-  make install
-
-fi
+# Copy the dev files into $BUILD_DIR/include $BUILD_DIR/lbs
+make install
 
 #-- Create the package
 echo ' '
 echo '--> CREATING IVERILOG apio package'
 cd $WORK/$PACK_DIR/$BUILD_DIR
-tar vjcf $TARBALL bin
+tar vjcf $TARBALL $NAME
 mv $TARBALL ..
