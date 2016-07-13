@@ -16,7 +16,6 @@ FILENAME_TAR=v10_1.tar.gz
 
 # Store current dir
 WORK=$PWD
-PREFIX=$WORK/$PACK_DIR/$BUILD_DIR/$NAME
 
 # -- TARGET: CLEAN. Remove the build dir and the generated packages
 # --  then exit
@@ -74,7 +73,7 @@ cd $BUILD_DIR/$FILENAME
 autoconf
 
 # Prepare for building
-./configure --prefix=$PREFIX
+./configure
 
 # Compile!
 make -j$(( $(nproc) -1))
@@ -92,7 +91,7 @@ make -j$(( $(nproc) -1)) LDFLAGS=' -static'
 cd ..
 
 # Copy the dev files into $BUILD_DIR/include $BUILD_DIR/lbs
-make install
+make install prefix=$WORK/$PACK_DIR/$BUILD_DIR/$NAME
 
 #-- Create the package
 echo ' '
