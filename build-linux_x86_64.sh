@@ -76,12 +76,12 @@ autoconf
 ./configure LDFLAGS='-static-libstdc++'
 
 # Compile!
-make -j$(( $(nproc) -1))
+make -j$(($(nproc)-1))
 
 # Make iverilog static
 cd driver
 make clean
-make -j$(( $(nproc) -1)) LDFLAGS='-static'
+make -j$(($(nproc)-1)) LDFLAGS='-static'
 cd ..
 
 # Copy the dev files into $BUILD_DIR/include $BUILD_DIR/lbs

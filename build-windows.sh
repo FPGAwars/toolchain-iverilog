@@ -77,7 +77,7 @@ autoconf
 ./configure --host=$HOST LDFLAGS='-static'
 
 # Compile!
-make -j$(( $(nproc) -1))
+make -j$(($(nproc)-1))
 
 # Copy the dev files into $BUILD_DIR/include $BUILD_DIR/lbs
 make install prefix=$WORK/$PACK_DIR/$BUILD_DIR/$NAME

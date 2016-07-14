@@ -76,7 +76,7 @@ sh autoconf.sh
 ./configure
 
 # Compile!
-make -j$(( $(nproc) -1))
+make -j$(($(sysctl -n hw.ncpu)-1))
 
 # Copy the dev files into $BUILD_DIR/include $BUILD_DIR/lbs
 make install prefix=$WORK/$PACK_DIR/$BUILD_DIR/$NAME
