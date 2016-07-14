@@ -1,7 +1,7 @@
 VERSION=1
 UPSTREAM=upstream
 PACK_DIR=packages
-ARCH=linux_x86_64
+ARCH=linux_i686
 BUILD_DIR=build_$ARCH
 PACKNAME=toolchain-iverilog-$ARCH-$VERSION
 TARBALL=$PACKNAME.tar.bz2
@@ -33,7 +33,7 @@ fi
 
 # Install dependencies
 echo "Install dependencies:"
-sudo apt-get install build-essential bison flex gperf libtool autoconf
+sudo apt-get install build-essential bison flex gperf libtool autoconf gcc-multilib g++-multilib
 
 # Create the upstream folder
 mkdir -p $UPSTREAM
@@ -73,22 +73,10 @@ cd $BUILD_DIR/$FILENAME
 autoconf
 
 # Prepare for building
-./configure
+./configure CFLAGS='-m32' CXXFLAGS='-m32' LDFLAGS='-m32 -static' LDTARGETFLAGS='-melf_i386'
 
 # Compile!
 make -j$(( $(nproc) -1))
-
-# Make vvp static
-cd vvp
-make clean
-make -j$(( $(nproc) -1)) LDFLAGS='-rdynamic -static'
-cd ..
-
-# Make iverilog static
-cd driver
-make clean
-make -j$(( $(nproc) -1)) LDFLAGS='-static'
-cd ..
 
 # Copy the dev files into $BUILD_DIR/include $BUILD_DIR/lbs
 make install prefix=$WORK/$PACK_DIR/$BUILD_DIR/$NAME
