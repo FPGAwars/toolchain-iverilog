@@ -73,7 +73,7 @@ cd $BUILD_DIR/$FILENAME
 autoconf
 
 # Prepare for building
-./configure CFLAGS='-m32' CXXFLAGS='-m32' LDFLAGS='-m32 -static' LDTARGETFLAGS='-melf_i386'
+./configure --with-m32 LDFLAGS='-static'
 
 # Compile!
 make -j$(( $(nproc) -1))
