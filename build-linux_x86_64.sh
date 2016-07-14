@@ -73,16 +73,10 @@ cd $BUILD_DIR/$FILENAME
 autoconf
 
 # Prepare for building
-./configure
+./configure LDFLAGS='-static-libstdc++'
 
 # Compile!
 make -j$(( $(nproc) -1))
-
-# Make vvp static
-cd vvp
-make clean
-make -j$(( $(nproc) -1)) LDFLAGS='-rdynamic -static'
-cd ..
 
 # Make iverilog static
 cd driver
