@@ -73,10 +73,16 @@ cd $BUILD_DIR/$FILENAME
 autoconf
 
 # Prepare for building
-./configure --with-m32 LDFLAGS='-static'
+./configure --with-m32 LDFLAGS='-static-libstdc++'
 
 # Compile!
 make -j$(($(nproc)-1))
+
+# Make iverilog static
+cd driver
+make clean
+make -j$(($(nproc)-1)) LDFLAGS='-m32 -static'
+cd ..
 
 # Copy the dev files into $BUILD_DIR/include $BUILD_DIR/lbs
 make install prefix=$WORK/$PACK_DIR/$BUILD_DIR/$NAME
