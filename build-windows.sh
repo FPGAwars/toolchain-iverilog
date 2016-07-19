@@ -1,4 +1,4 @@
-VERSION=1
+VERSION=2
 UPSTREAM=upstream
 PACK_DIR=packages
 ARCH=windows
@@ -81,6 +81,9 @@ make -j$(($(nproc)-1))
 
 # Copy the dev files into $BUILD_DIR/include $BUILD_DIR/lbs
 make install prefix=$WORK/$PACK_DIR/$BUILD_DIR/$NAME
+
+# Copy the vlib directory
+cp -r $WORK/vlib $WORK/$PACK_DIR/$BUILD_DIR/$NAME
 
 #-- Create the package
 echo ' '
