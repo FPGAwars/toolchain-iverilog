@@ -27,20 +27,61 @@ rsync -a $IVERILOG $BUILD_DIR --exclude .git
 
 cd $BUILD_DIR/$IVERILOG
 
-#-- Generate the new configure
-autoconf
+if [ $ARCH == "linux_x86_64" ]; then
+  #-- Generate the new configure
+  autoconf
 
-# Prepare for building
-./configure LDFLAGS='-static-libstdc++'
+  # Prepare for building
+  ./configure LDFLAGS="-static-libstdc++"
 
-# -- Compile it
-make -j$J
+  # -- Compile it
+  make -j$J
 
-# Make iverilog static
-cd driver
-make clean
-make -j$J LDFLAGS='-static'
-cd ..
+  # Make iverilog static
+  cd driver
+  make clean
+  make -j$J LDFLAGS="-static"
+  cd ..
+fi
+
+if [ $ARCH == "linux_i686" ]; then
+  #-- Generate the new configure
+  autoconf
+
+  # Prepare for building
+  ./configure --with-m32 LDFLAGS="-static-libstdc++"
+
+  # -- Compile it
+  make -j$J
+
+  # Make iverilog static
+  cd driver
+  make clean
+  make -j$J LDFLAGS="-m32 -static"
+  cd ..
+fi
+
+if [ $ARCH == "windows" ]; then
+  #-- Generate the new configure
+  autoconf
+
+  # Prepare for building
+  ./configure --host="i686-w64-mingw32" LDFLAGS="-static"
+
+  # -- Compile it
+  make -j$J
+fi
+
+if [ $ARCH == "darwin" ]; then
+  #-- Generate the new configure
+  sh autoconf.sh
+
+  # Prepare for building
+  ./configure
+
+  # -- Compile it
+  make -j$J
+fi
 
 # -- Test the generated executables
 if [ $ARCH != "darwin" ]; then
