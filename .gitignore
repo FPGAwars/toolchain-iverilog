@@ -1,3 +1,7 @@
-build_*
-packages/
-upstream/
+.sconsign.dblite
+*.out
+*.vcd
+*.tar.gz
+_builds/
+_packages/
+_upstream/
