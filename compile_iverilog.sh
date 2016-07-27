@@ -78,6 +78,23 @@ if [ $ARCH == "linux_armv7l" ]; then
   make -j$J
 fi
 
+if [ $ARCH == "linux_aarch64" ]; then
+  #-- Generate the new configure
+  autoconf
+
+  # Prepare for building
+  ./configure --host="aarch64-linux-gnu"
+
+  # Apply cross-execution patch
+  sed -i 's/.\/version.exe `/qemu-aarch64 -L \/usr\/aarch64-linux-gnu\/ version.exe `/g' Makefile Makefile.in
+  sed -i 's/..\/version.exe `/qemu-aarch64 -L \/usr\/aarch64-linux-gnu\/ ..\/version.exe `/g' driver/Makefile driver/Makefile.in
+  sed -i 's/..\/version.exe `/qemu-aarch64 -L \/usr\/aarch64-linux-gnu\/ ..\/version.exe `/g' vvp/Makefile vvp/Makefile.in
+  sed -i 's/.\/draw_tt.exe/qemu-aarch64 -L \/usr\/aarch64-linux-gnu\/ draw_tt.exe/g' vvp/Makefile
+
+  # -- Compile it
+  make -j$J
+fi
+
 if [ $ARCH == "windows" ]; then
   #-- Generate the new configure
   autoconf
