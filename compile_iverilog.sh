@@ -61,6 +61,23 @@ if [ $ARCH == "linux_i686" ]; then
   cd ..
 fi
 
+if [ $ARCH == "linux_armv7l" ]; then
+  #-- Generate the new configure
+  autoconf
+
+  # Prepare for building
+  ./configure --host="arm-linux-gnueabihf"
+
+  # Apply cross-execution patch
+  sed -i 's/.\/version.exe `/qemu-arm -L \/usr\/arm-linux-gnueabihf\/ version.exe `/g' Makefile Makefile.in
+  sed -i 's/..\/version.exe `/qemu-arm -L \/usr\/arm-linux-gnueabihf\/ ..\/version.exe `/g' driver/Makefile driver/Makefile.in
+  sed -i 's/..\/version.exe `/qemu-arm -L \/usr\/arm-linux-gnueabihf\/ ..\/version.exe `/g' vvp/Makefile vvp/Makefile.in
+  sed -i 's/.\/draw_tt.exe/qemu-arm -L \/usr\/arm-linux-gnueabihf\/ draw_tt.exe/g' vvp/Makefile
+
+  # -- Compile it
+  make -j$J
+fi
+
 if [ $ARCH == "windows" ]; then
   #-- Generate the new configure
   autoconf
