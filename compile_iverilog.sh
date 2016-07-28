@@ -66,7 +66,7 @@ if [ $ARCH == "linux_armv7l" ]; then
   autoconf
 
   # Prepare for building
-  ./configure --host="arm-linux-gnueabihf"
+  ./configure --host="arm-linux-gnueabihf" LDFLAGS="-static-libstdc++"
 
   # Apply cross-execution patch
   sed -i 's/.\/version.exe `/qemu-arm -L \/usr\/arm-linux-gnueabihf\/ version.exe `/g' Makefile Makefile.in
@@ -83,7 +83,7 @@ if [ $ARCH == "linux_aarch64" ]; then
   autoconf
 
   # Prepare for building
-  ./configure --host="aarch64-linux-gnu"
+  ./configure --host="aarch64-linux-gnu" LDFLAGS="-static"
 
   # Apply cross-execution patch
   sed -i 's/.\/version.exe `/qemu-aarch64 -L \/usr\/aarch64-linux-gnu\/ version.exe `/g' Makefile Makefile.in
