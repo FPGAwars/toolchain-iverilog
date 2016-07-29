@@ -76,6 +76,12 @@ if [ $ARCH == "linux_armv7l" ]; then
 
   # -- Compile it
   make -j$J
+
+  # Make iverilog static
+  cd driver
+  make clean
+  make -j$J LDFLAGS="-static"
+  cd ..
 fi
 
 if [ $ARCH == "linux_aarch64" ]; then
@@ -83,7 +89,7 @@ if [ $ARCH == "linux_aarch64" ]; then
   autoconf
 
   # Prepare for building
-  ./configure --host="aarch64-linux-gnu" LDFLAGS="-static"
+  ./configure --host="aarch64-linux-gnu" LDFLAGS="-static-libstdc++"
 
   # Apply cross-execution patch
   sed -i 's/.\/version.exe `/qemu-aarch64 -L \/usr\/aarch64-linux-gnu\/ version.exe `/g' Makefile Makefile.in
@@ -93,6 +99,12 @@ if [ $ARCH == "linux_aarch64" ]; then
 
   # -- Compile it
   make -j$J
+
+  # Make iverilog static
+  cd driver
+  make clean
+  make -j$J LDFLAGS="-static"
+  cd ..
 fi
 
 if [ $ARCH == "windows" ]; then
