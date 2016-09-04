@@ -88,6 +88,8 @@ module SB_DFFER (
 	output Q
 );
 
+endmodule
+
 module SB_DFFESS (
 	input C,
 	input D,
@@ -95,6 +97,8 @@ module SB_DFFESS (
 	input S,
 	output Q
 );
+
+endmodule
 
 module SB_DFFES (
 	input C,
@@ -104,11 +108,15 @@ module SB_DFFES (
 	output Q
 );
 
+endmodule
+
 module SB_DFFN (
 	input C,
 	input D,
 	output Q
 );
+
+endmodule
 
 module SB_DFFNE (
 	input C,
@@ -117,12 +125,16 @@ module SB_DFFNE (
 	output Q
 );
 
+endmodule
+
 module SB_DFFNSR (
 	input C,
 	input D,
 	input R,
 	output Q
 );
+
+endmodule
 
 module SB_DFFNR (
 	input C,
@@ -131,6 +143,8 @@ module SB_DFFNR (
 	output Q
 );
 
+endmodule
+
 module SB_DFFNSS (
 	input C,
 	input D,
@@ -138,12 +152,16 @@ module SB_DFFNSS (
 	output Q
 );
 
+endmodule
+
 module SB_DFFNS (
 	input C,
 	input D,
 	input S,
 	output Q
 );
+
+endmodule
 
 module SB_DFFNESR (
 	input C,
@@ -153,6 +171,8 @@ module SB_DFFNESR (
 	output Q
 );
 
+endmodule
+
 module SB_DFFNER (
 	input C,
 	input D,
@@ -160,6 +180,8 @@ module SB_DFFNER (
 	input R,
 	output Q
 );
+
+endmodule
 
 module SB_DFFNESS (
 	input C,
@@ -169,6 +191,8 @@ module SB_DFFNESS (
 	output Q
 );
 
+endmodule
+
 module SB_DFFNES (
 	input C,
 	input D,
@@ -177,12 +201,16 @@ module SB_DFFNES (
 	output Q
 );
 
+endmodule
+
 module SB_CARRY (
 	input I0,
 	input I1,
 	input CI,
-	output CO,
+	output CO
 );
+
+endmodule
 
 module SB_LUT4 (
         input I0,
