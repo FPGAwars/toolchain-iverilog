@@ -17,8 +17,8 @@ ARCHS=( )
 NAME=toolchain-iverilog
 
 # -- Debug flags
-INSTALL_DEPS=0
-COMPILE_IVERILOG=0
+INSTALL_DEPS=1
+COMPILE_IVERILOG=1
 CREATE_PACKAGE=1
 
 # -- Store current dir
