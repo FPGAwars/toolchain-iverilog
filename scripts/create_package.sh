@@ -30,7 +30,7 @@ fi
 
 if [ $ARCH == "windows" ]; then
   sed -i "s/%VERSION%/\"$VERSION\"/;" $PACKAGE_DIR/$NAME/package.json
-  sed -i "s/%SYSTEM%/\"windows\", \"windows_amd\", \"windows_x86\"/;" $PACKAGE_DIR/$NAME/package.json
+  sed -i "s/%SYSTEM%/\"windows\", \"windows_amd64\", \"windows_x86\"/;" $PACKAGE_DIR/$NAME/package.json
 fi
 
 ## --Create a tar.gz package
