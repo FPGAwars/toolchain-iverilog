@@ -2,10 +2,10 @@
   "toolchain-iverilog":
     [
       {
-        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v0.3/toolchain-iverilog-linux_x86_64-3.tar.bz2",
-        "sha1": "4f43aad8788388abb71f418992be2f0ffd01e0c2",
-        "version": "0.3",
-        "system": ["linux_x86_64"]
+        "url": "",
+        "sha1": "",
+        "version": "",
+        "system": [""]
       }
     ]
 }

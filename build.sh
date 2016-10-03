@@ -6,7 +6,7 @@
 # Generate toolchain-iverilog-arch-ver.tar.gz from source code
 # sources: http://iverilog.icarus.com/
 
-VERSION=3
+VERSION=1.0.0
 
 # -- Target architectures
 ARCHS=( )
@@ -17,7 +17,8 @@ ARCHS=( )
 NAME=toolchain-iverilog
 
 # -- Debug flags
-COMPILE_IVERILOG=1
+INSTALL_DEPS=0
+COMPILE_IVERILOG=0
 CREATE_PACKAGE=1
 
 # -- Store current dir
@@ -81,18 +82,22 @@ do
     continue
   fi
 
-  # -- Install dependencies
-  print ">> Install dependencies"
-  . $WORK_DIR/install_dependencies.sh
+  # --------- Instal dependencies ------------------------------------
+  if [ $INSTALL_DEPS == "1" ]; then
 
-  # -- Create the build dir
-  mkdir -p $BUILD_DIR
+    print ">> Install dependencies"
+    . $WORK_DIR/scripts/install_dependencies.sh
+
+  fi
 
   # --------- Compile iverilog ---------------------------------------
   if [ $COMPILE_IVERILOG == "1" ]; then
 
+    # -- Create the build dir
+    mkdir -p $BUILD_DIR
+
     print ">> Compile iverilog"
-    . $WORK_DIR/compile_iverilog.sh
+    . $WORK_DIR/scripts/compile_iverilog.sh
 
   fi
 
@@ -100,7 +105,7 @@ do
   if [ $CREATE_PACKAGE == "1" ]; then
 
     print ">> Create package"
-    . $WORK_DIR/create_package.sh
+    . $WORK_DIR/scripts/create_package.sh
 
   fi
 
