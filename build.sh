@@ -6,12 +6,11 @@
 # Generate toolchain-iverilog-arch-ver.tar.gz from source code
 # sources: http://iverilog.icarus.com/
 
-VERSION=1.0.0
+VERSION=1.1.0
 
 # -- Target architectures
-ARCHS=( )
-# ARCHS=( linux_x86_64 linux_i686 linux_armv7l linux_aarch64 windows )
-# ARCHS=( darwin )
+ARCHS=$1
+TARGET_ARCHS="linux_x86_64 linux_i686 linux_armv7l linux_aarch64 windows darwin"
 
 # -- Toolchain name
 NAME=toolchain-iverilog
@@ -44,6 +43,7 @@ function test_bin {
     exit 1
   fi
 }
+
 # -- Print function
 function print {
   echo ""
@@ -52,13 +52,24 @@ function print {
 }
 
 # -- Check ARCHS
-if [ ${#ARCHS[@]} -eq 0 ]; then
-  print "NOTE: add your architectures to the ARCHS variable in the build.sh script"
+if [ "$ARCHS" == "" ]; then
+  echo ""
+  echo "Usage:"
+  echo "  bash build.sh \"linux_x86_64 linux_i686\""
+  echo ""
+  echo "Target archs:"
+  echo "  $TARGET_ARCHS"
 fi
 
 # -- Loop
 for ARCH in ${ARCHS[@]}
 do
+
+  if [[ ! $TARGET_ARCHS =~ (^|[[:space:]])$ARCH([[:space:]]|$) ]]; then
+    echo ""
+    echo ">>> WRONG ARCHITECTURE $ARCH"
+    continue
+  fi
 
   echo ""
   echo ">>> ARCHITECTURE $ARCH"
@@ -69,19 +80,6 @@ do
   # -- Directory for installation the target files
   PACKAGE_DIR=$PACKAGES_DIR/build_$ARCH
 
-  # -- Remove the build dir and the generated packages then exit
-  if [ "$1" == "clean" ]; then
-
-    # -- Remove the package dir
-    rm -r -f $PACKAGE_DIR
-
-    # -- Remove the build dir
-    rm -r -f $BUILD_DIR
-
-    print ">> CLEAN"
-    continue
-  fi
-
   # --------- Instal dependencies ------------------------------------
   if [ $INSTALL_DEPS == "1" ]; then
 
@@ -90,11 +88,11 @@ do
 
   fi
 
+  # -- Create the build dir
+  mkdir -p $BUILD_DIR
+
   # --------- Compile iverilog ---------------------------------------
   if [ $COMPILE_IVERILOG == "1" ]; then
-
-    # -- Create the build dir
-    mkdir -p $BUILD_DIR
 
     print ">> Compile iverilog"
     . $WORK_DIR/scripts/compile_iverilog.sh
