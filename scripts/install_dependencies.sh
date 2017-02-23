@@ -13,22 +13,24 @@ fi
 
 if [ $ARCH == "linux_armv7l" ]; then
   sudo apt-get install -y build-essential bison flex gperf libtool autoconf \
-                          gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf qemu
+                          gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf \
+                          binfmt-support qemu-user-static
   sudo apt-get autoremove -y
 fi
 
 if [ $ARCH == "linux_aarch64" ]; then
   sudo apt-get install -y build-essential bison flex gperf libtool autoconf \
-                          gcc-aarch64-linux-gnu g++-aarch64-linux-gnu qemu
+                          gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
+                          binfmt-support qemu-user-static
+  sudo apt-get autoremove -y
+fi
+
+if [ $ARCH == "windows" ]; then
+  sudo apt-get install -y build-essential bison flex gperf libtool autoconf \
+                          mingw-w64 wine
   sudo apt-get autoremove -y
 fi
 
 if [ $ARCH == "darwin" ]; then
   brew install bison
-fi
-
-if [ $ARCH == "windows" ]; then
-  sudo apt-get install -y build-essential bison flex gperf libtool autoconf \
-                          mingw-w64 mingw-w64-tools zip
-  sudo apt-get autoremove -y
 fi

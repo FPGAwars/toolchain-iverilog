@@ -1,65 +1,46 @@
 # -- Compile Iverilog script
 
-IVERILOG=iverilog-10_1
-REL_IVERILOG=https://github.com/steveicarus/iverilog/archive/v10_1.tar.gz
+VER=10_1
+IVERILOG=iverilog-$VER
+TAR_IVERILOG=v$VER.tar.gz
+REL_IVERILOG=https://github.com/steveicarus/iverilog/archive/$TAR_IVERILOG
 
-EXT=""
-if [ $ARCH == "windows" ]; then
-  EXT=".exe"
-fi
-
-if [ $ARCH == "darwin" ]; then
-  J=$(($(sysctl -n hw.ncpu)-1))
-else
-  J=$(($(nproc)-1))
-fi
+# -- Setup
+. $WORK_DIR/scripts/build_setup.sh
 
 cd $UPSTREAM_DIR
 
 # -- Check and download the release
-test -e v10_1.tar.gz || wget $REL_IVERILOG
+test -e $TAR_IVERILOG || wget $REL_IVERILOG
 
 # -- Unpack the release
-tar vzxf v10_1.tar.gz
+tar zxf $TAR_IVERILOG
 
 # -- Copy the upstream sources into the build directory
 rsync -a $IVERILOG $BUILD_DIR --exclude .git
 
 cd $BUILD_DIR/$IVERILOG
 
-if [ $ARCH == "linux_x86_64" ]; then
-  #-- Generate the new configure
-  autoconf
+#-- Generate the new configure
+sh autoconf.sh
 
-  # Prepare for building
-  ./configure LDFLAGS="-static-libstdc++"
+# Prepare for building
+./configure --host=$HOST LDFLAGS="$CONFIG_LDFLAGS" $CONFIG_FLAGS
 
-  # -- Compile it
-  make -j$J
+# -- Compile it
+make -j$J
 
-  # Make iverilog static
-  cd driver
-  make clean
-  make -j$J LDFLAGS="-static"
-  cd ..
+if [ ${ARCH:0:5} == "linux" ]; then
+  # Make binaries static
+  SUBDIRS="driver vvp ivlpp"
+  for SUBDIR in ${SUBDIRS[@]}
+  do
+    make -C $SUBDIR clean
+    make -C $SUBDIR -j$J LDFLAGS="$MAKE_LDFLAGS"
+  done
 fi
 
-if [ $ARCH == "linux_i686" ]; then
-  #-- Generate the new configure
-  autoconf
 
-  # Prepare for building
-  ./configure --with-m32 LDFLAGS="-static-libstdc++"
-
-  # -- Compile it
-  make -j$J
-
-  # Make iverilog static
-  cd driver
-  make clean
-  make -j$J LDFLAGS="-m32 -static"
-  cd ..
-fi
 
 if [ $ARCH == "linux_armv7l" ]; then
   #-- Generate the new configure
@@ -131,7 +112,7 @@ fi
 
 # -- Test the generated executables
 if [ $ARCH != "darwin" ]; then
-  test_bin driver/iverilog$EXT
+  test_bin driver/iverilog$EXE
 fi
 
 # -- Install the programs into the package folder
