@@ -15,7 +15,7 @@ bash build.sh "linux_x86_64"
 Clean:
 
 ```
-bash clean.sh "linux_x86_64 linux_i686"
+bash clean.sh "linux_x86_64"
 ```
 
 Target architectures:
