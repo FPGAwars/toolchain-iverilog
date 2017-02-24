@@ -21,21 +21,26 @@ rsync -a $IVERILOG $BUILD_DIR --exclude .git
 
 cd $BUILD_DIR/$IVERILOG
 
+# -- Configure qemu
 if [ ${ARCH:0:7} == "linux_a" ]; then
-  # Configure qemu
   export QEMU_LD_PREFIX=/usr/$HOST
 fi
 
-#-- Generate the new configure
+# -- Patch __strtod: https://github.com/steveicarus/iverilog/pull/148
+if [ $ARCH == "windows_amd64" ]; then
+  sed -i "s/___strtod/__strtod/g" aclocal.m4
+fi
+
+# -- Generate the new configure
 sh autoconf.sh
 
-# Prepare for building
+# -- Prepare for building
 ./configure --host=$HOST LDFLAGS="$CONFIG_LDFLAGS" $CONFIG_FLAGS
 
 # -- Compile it
 make -j$J
 
-# Make binaries static
+# -- Make binaries static
 if [ ${ARCH:0:5} == "linux" ]; then
   SUBDIRS="driver ivlpp vvp"
   for SUBDIR in ${SUBDIRS[@]}
@@ -43,30 +48,6 @@ if [ ${ARCH:0:5} == "linux" ]; then
     make -C $SUBDIR clean
     make -C $SUBDIR -j$J LDFLAGS="$MAKE_LDFLAGS"
   done
-fi
-
-
-
-if [ $ARCH == "windows" ]; then
-  #-- Generate the new configure
-  autoconf
-
-  # Prepare for building
-  ./configure --host="i686-w64-mingw32" LDFLAGS="-static"
-
-  # -- Compile it
-  make -j$J
-fi
-
-if [ $ARCH == "darwin" ]; then
-  #-- Generate the new configure
-  sh autoconf.sh
-
-  # Prepare for building
-  ./configure
-
-  # -- Compile it
-  make -j$J
 fi
 
 # -- Test the generated executables
