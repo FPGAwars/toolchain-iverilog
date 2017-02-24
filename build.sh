@@ -91,6 +91,9 @@ do
   # -- Create the build dir
   mkdir -p $BUILD_DIR
 
+  # -- Create the package folders
+  mkdir -p $PACKAGE_DIR/$NAME
+
   # --------- Compile iverilog ---------------------------------------
   if [ $COMPILE_IVERILOG == "1" ]; then
 

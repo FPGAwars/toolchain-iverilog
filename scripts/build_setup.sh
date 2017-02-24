@@ -3,7 +3,7 @@
 if [ $ARCH == "linux_x86_64" ]; then
   HOST="x86_64-linux-gnu"
   CONFIG_LDFLAGS="-static-libstdc++"
-  MAKE_LDFLAGS"-static"
+  MAKE_LDFLAGS="-static"
 fi
 
 if [ $ARCH == "linux_i686" ]; then
@@ -14,15 +14,19 @@ if [ $ARCH == "linux_i686" ]; then
 fi
 
 if [ $ARCH == "linux_armv7l" ]; then
-  echo ""
+  HOST="arm-linux-gnueabihf"
+  CONFIG_LDFLAGS="-static-libstdc++"
+  MAKE_LDFLAGS="-static"
 fi
 
 if [ $ARCH == "linux_aarch64" ]; then
-  echo ""
+  HOST="aarch64-linux-gnu"
+  CONFIG_LDFLAGS="-static-libstdc++"
+  MAKE_LDFLAGS="-static"
 fi
 
 if [ $ARCH == "windows_x86" ]; then
-  echo ""
+  EXE=".exe"
 fi
 
 if [ $ARCH == "windows_amd64" ]; then

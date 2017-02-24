@@ -21,6 +21,11 @@ rsync -a $IVERILOG $BUILD_DIR --exclude .git
 
 cd $BUILD_DIR/$IVERILOG
 
+if [ ${ARCH:0:7} == "linux_a" ]; then
+  # Configure qemu
+  export QEMU_LD_PREFIX=/usr/$HOST
+fi
+
 #-- Generate the new configure
 sh autoconf.sh
 
@@ -30,9 +35,9 @@ sh autoconf.sh
 # -- Compile it
 make -j$J
 
+# Make binaries static
 if [ ${ARCH:0:5} == "linux" ]; then
-  # Make binaries static
-  SUBDIRS="driver vvp ivlpp"
+  SUBDIRS="driver ivlpp vvp"
   for SUBDIR in ${SUBDIRS[@]}
   do
     make -C $SUBDIR clean
@@ -41,52 +46,6 @@ if [ ${ARCH:0:5} == "linux" ]; then
 fi
 
 
-
-if [ $ARCH == "linux_armv7l" ]; then
-  #-- Generate the new configure
-  autoconf
-
-  # Prepare for building
-  ./configure --host="arm-linux-gnueabihf" LDFLAGS="-static-libstdc++"
-
-  # Apply cross-execution patch
-  sed -i 's/.\/version.exe `/qemu-arm -L \/usr\/arm-linux-gnueabihf\/ version.exe `/g' Makefile Makefile.in
-  sed -i 's/..\/version.exe `/qemu-arm -L \/usr\/arm-linux-gnueabihf\/ ..\/version.exe `/g' driver/Makefile driver/Makefile.in
-  sed -i 's/..\/version.exe `/qemu-arm -L \/usr\/arm-linux-gnueabihf\/ ..\/version.exe `/g' vvp/Makefile vvp/Makefile.in
-  sed -i 's/.\/draw_tt.exe/qemu-arm -L \/usr\/arm-linux-gnueabihf\/ draw_tt.exe/g' vvp/Makefile
-
-  # -- Compile it
-  make -j$J
-
-  # Make iverilog static
-  cd driver
-  make clean
-  make -j$J LDFLAGS="-static"
-  cd ..
-fi
-
-if [ $ARCH == "linux_aarch64" ]; then
-  #-- Generate the new configure
-  autoconf
-
-  # Prepare for building
-  ./configure --host="aarch64-linux-gnu" LDFLAGS="-static-libstdc++"
-
-  # Apply cross-execution patch
-  sed -i 's/.\/version.exe `/qemu-aarch64 -L \/usr\/aarch64-linux-gnu\/ version.exe `/g' Makefile Makefile.in
-  sed -i 's/..\/version.exe `/qemu-aarch64 -L \/usr\/aarch64-linux-gnu\/ ..\/version.exe `/g' driver/Makefile driver/Makefile.in
-  sed -i 's/..\/version.exe `/qemu-aarch64 -L \/usr\/aarch64-linux-gnu\/ ..\/version.exe `/g' vvp/Makefile vvp/Makefile.in
-  sed -i 's/.\/draw_tt.exe/qemu-aarch64 -L \/usr\/aarch64-linux-gnu\/ draw_tt.exe/g' vvp/Makefile
-
-  # -- Compile it
-  make -j$J
-
-  # Make iverilog static
-  cd driver
-  make clean
-  make -j$J LDFLAGS="-static"
-  cd ..
-fi
 
 if [ $ARCH == "windows" ]; then
   #-- Generate the new configure
@@ -113,6 +72,8 @@ fi
 # -- Test the generated executables
 if [ $ARCH != "darwin" ]; then
   test_bin driver/iverilog$EXE
+  test_bin ivlpp/ivlpp$EXE
+  test_bin vvp/vvp$EXE
 fi
 
 # -- Install the programs into the package folder
