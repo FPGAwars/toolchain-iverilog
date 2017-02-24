@@ -9,13 +9,13 @@ Static binaries of the Icarus Verilog](http://iverilog.icarus.com) tools. Packag
 Build:
 
 ```
-bash build.sh "linux_x86_64"
+bash build.sh linux_x86_64
 ```
 
 Clean:
 
 ```
-bash clean.sh "linux_x86_64"
+bash clean.sh linux_x86_64
 ```
 
 Target architectures:

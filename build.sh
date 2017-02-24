@@ -60,7 +60,7 @@ fi
 
 if [[ $# < 1 ]]; then
   echo ""
-  echo "Usage: bash build.sh \"TARGET\""
+  echo "Usage: bash build.sh TARGET"
   echo ""
   echo "Targets: $TARGET_ARCHS"
   exit 1

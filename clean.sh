@@ -31,7 +31,7 @@ fi
 
 if [[ $# < 1 ]]; then
   echo ""
-  echo "Usage: bash clean.sh \"TARGET\""
+  echo "Usage: bash clean.sh TARGET"
   echo ""
   echo "Targets: $TARGET_ARCHS"
   exit 1
@@ -44,7 +44,7 @@ if [[ $ARCH =~ [[:space:]] || ! $TARGET_ARCHS =~ (^|[[:space:]])$ARCH([[:space:]
 fi
 
 echo ""
-echo ">>> ARCHITECTURE $ARCH"
+echo ">>> ARCHITECTURE \"$ARCH\""
 
 printf "Are you sure? [y/N]:${NC} "
 read RESP
