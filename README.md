@@ -9,7 +9,7 @@ Static binaries of the Icarus Verilog](http://iverilog.icarus.com) tools. Packag
 Build:
 
 ```
-bash build.sh "linux_x86_64 linux_i686"
+bash build.sh "linux_x86_64"
 ```
 
 Clean:

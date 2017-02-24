@@ -35,7 +35,7 @@ fi
 sh autoconf.sh
 
 # -- Prepare for building
-./configure --host=$HOST LDFLAGS="$CONFIG_LDFLAGS" $CONFIG_FLAGS
+./configure --build=$BUILD --host=$HOST LDFLAGS="$CONFIG_LDFLAGS" $CONFIG_FLAGS
 
 # -- Compile it
 make -j$J

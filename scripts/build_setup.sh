@@ -41,4 +41,5 @@ if [ $ARCH == "darwin" ]; then
   J=$(($(sysctl -n hw.ncpu)-1))
 else
   J=$(($(nproc)-1))
+  BUILD="x86_64-unknown-linux-gnu"
 fi
