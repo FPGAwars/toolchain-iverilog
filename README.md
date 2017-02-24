@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Static binaries of the Icarus Verilog](http://iverilog.icarus.com) tools. Packaged for [Apio](https://github.com/FPGAwars/apio) and [Platformio](http://platformio.org/).
+Static binaries of the [Icarus Verilog](http://iverilog.icarus.com) tools. Packaged for [Apio](https://github.com/FPGAwars/apio) and [Platformio](http://platformio.org/).
 
 ## Usage
 

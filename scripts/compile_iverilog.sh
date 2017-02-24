@@ -31,6 +31,11 @@ if [ $ARCH == "windows_amd64" ]; then
   sed -i "s/___strtod/__strtod/g" aclocal.m4
 fi
 
+if [ $ARCH != "darwin" ]; then
+  export CC=$HOST-gcc
+  export CXX=$HOST-g++
+fi
+
 # -- Generate the new configure
 sh autoconf.sh
 
