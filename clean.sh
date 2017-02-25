@@ -46,7 +46,7 @@ fi
 echo ""
 echo ">>> ARCHITECTURE \"$ARCH\""
 
-printf "Are you sure? [y/N]:${NC} "
+printf "Are you sure? [y/N]: "
 read RESP
 case "$RESP" in
     [yY][eE][sS]|[yY])

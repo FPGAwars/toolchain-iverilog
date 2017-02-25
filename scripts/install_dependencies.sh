@@ -32,7 +32,7 @@ if [ ${ARCH:0:7} == "windows" ]; then
 fi
 
 if [ $ARCH == "darwin" ]; then
-  DEPS="bison flex gperf autoconf"
+  DEPS="bison flex autoconf"
   brew update
   brew install --force $DEPS
   brew unlink $DEPS && brew link --force $DEPS
