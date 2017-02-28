@@ -6,12 +6,11 @@
 # Generate toolchain-iverilog-arch-ver.tar.gz from source code
 # sources: http://iverilog.icarus.com/
 
-VERSION=1.0.0
+VERSION=1.1.0
 
 # -- Target architectures
-ARCHS=( )
-# ARCHS=( linux_x86_64 linux_i686 linux_armv7l linux_aarch64 windows )
-# ARCHS=( darwin )
+ARCH=$1
+TARGET_ARCHS="linux_x86_64 linux_i686 linux_armv7l linux_aarch64 windows_x86 windows_amd64 darwin"
 
 # -- Toolchain name
 NAME=toolchain-iverilog
@@ -44,6 +43,7 @@ function test_bin {
     exit 1
   fi
 }
+
 # -- Print function
 function print {
   echo ""
@@ -51,62 +51,62 @@ function print {
   echo ""
 }
 
-# -- Check ARCHS
-if [ ${#ARCHS[@]} -eq 0 ]; then
-  print "NOTE: add your architectures to the ARCHS variable in the build.sh script"
+# -- Check ARCH
+if [[ $# > 1 ]]; then
+  echo ""
+  echo "Error: too many arguments"
+  exit 1
 fi
 
-# -- Loop
-for ARCH in ${ARCHS[@]}
-do
-
+if [[ $# < 1 ]]; then
   echo ""
-  echo ">>> ARCHITECTURE $ARCH"
+  echo "Usage: bash build.sh TARGET"
+  echo ""
+  echo "Targets: $TARGET_ARCHS"
+  exit 1
+fi
 
-  # -- Directory for compiling the tools
-  BUILD_DIR=$BUILDS_DIR/build_$ARCH
+if [[ $ARCH =~ [[:space:]] || ! $TARGET_ARCHS =~ (^|[[:space:]])$ARCH([[:space:]]|$) ]]; then
+  echo ""
+  echo ">>> WRONG ARCHITECTURE \"$ARCH\""
+  exit 1
+fi
 
-  # -- Directory for installation the target files
-  PACKAGE_DIR=$PACKAGES_DIR/build_$ARCH
+echo ""
+echo ">>> ARCHITECTURE \"$ARCH\""
 
-  # -- Remove the build dir and the generated packages then exit
-  if [ "$1" == "clean" ]; then
+# -- Directory for compiling the tools
+BUILD_DIR=$BUILDS_DIR/build_$ARCH
 
-    # -- Remove the package dir
-    rm -r -f $PACKAGE_DIR
+# -- Directory for installation the target files
+PACKAGE_DIR=$PACKAGES_DIR/build_$ARCH
 
-    # -- Remove the build dir
-    rm -r -f $BUILD_DIR
+# --------- Instal dependencies ------------------------------------
+if [ $INSTALL_DEPS == "1" ]; then
 
-    print ">> CLEAN"
-    continue
-  fi
+  print ">> Install dependencies"
+  . $WORK_DIR/scripts/install_dependencies.sh
 
-  # --------- Instal dependencies ------------------------------------
-  if [ $INSTALL_DEPS == "1" ]; then
+fi
 
-    print ">> Install dependencies"
-    . $WORK_DIR/scripts/install_dependencies.sh
+# -- Create the build dir
+mkdir -p $BUILD_DIR
 
-  fi
+# -- Create the package folders
+mkdir -p $PACKAGE_DIR/$NAME
 
-  # --------- Compile iverilog ---------------------------------------
-  if [ $COMPILE_IVERILOG == "1" ]; then
+# --------- Compile iverilog ---------------------------------------
+if [ $COMPILE_IVERILOG == "1" ]; then
 
-    # -- Create the build dir
-    mkdir -p $BUILD_DIR
+  print ">> Compile iverilog"
+  . $WORK_DIR/scripts/compile_iverilog.sh
 
-    print ">> Compile iverilog"
-    . $WORK_DIR/scripts/compile_iverilog.sh
+fi
 
-  fi
+# --------- Create the package -------------------------------------
+if [ $CREATE_PACKAGE == "1" ]; then
 
-  # --------- Create the package -------------------------------------
-  if [ $CREATE_PACKAGE == "1" ]; then
+  print ">> Create package"
+  . $WORK_DIR/scripts/create_package.sh
 
-    print ">> Create package"
-    . $WORK_DIR/scripts/create_package.sh
-
-  fi
-
-done
+fi

@@ -1,137 +1,63 @@
 # -- Compile Iverilog script
 
-IVERILOG=iverilog-10_1
-REL_IVERILOG=https://github.com/steveicarus/iverilog/archive/v10_1.tar.gz
+VER=10_1
+IVERILOG=iverilog-$VER
+TAR_IVERILOG=v$VER.tar.gz
+REL_IVERILOG=https://github.com/steveicarus/iverilog/archive/$TAR_IVERILOG
 
-EXT=""
-if [ $ARCH == "windows" ]; then
-  EXT=".exe"
-fi
-
-if [ $ARCH == "darwin" ]; then
-  J=$(($(sysctl -n hw.ncpu)-1))
-else
-  J=$(($(nproc)-1))
-fi
+# -- Setup
+. $WORK_DIR/scripts/build_setup.sh
 
 cd $UPSTREAM_DIR
 
 # -- Check and download the release
-test -e v10_1.tar.gz || wget $REL_IVERILOG
+test -e $TAR_IVERILOG || wget $REL_IVERILOG
 
 # -- Unpack the release
-tar vzxf v10_1.tar.gz
+tar zxf $TAR_IVERILOG
 
 # -- Copy the upstream sources into the build directory
 rsync -a $IVERILOG $BUILD_DIR --exclude .git
 
 cd $BUILD_DIR/$IVERILOG
 
-if [ $ARCH == "linux_x86_64" ]; then
-  #-- Generate the new configure
-  autoconf
-
-  # Prepare for building
-  ./configure LDFLAGS="-static-libstdc++"
-
-  # -- Compile it
-  make -j$J
-
-  # Make iverilog static
-  cd driver
-  make clean
-  make -j$J LDFLAGS="-static"
-  cd ..
+# -- Configure qemu
+if [ ${ARCH:0:7} == "linux_a" ]; then
+  export QEMU_LD_PREFIX=/usr/$HOST
 fi
 
-if [ $ARCH == "linux_i686" ]; then
-  #-- Generate the new configure
-  autoconf
-
-  # Prepare for building
-  ./configure --with-m32 LDFLAGS="-static-libstdc++"
-
-  # -- Compile it
-  make -j$J
-
-  # Make iverilog static
-  cd driver
-  make clean
-  make -j$J LDFLAGS="-m32 -static"
-  cd ..
+# -- Patch __strtod: https://github.com/steveicarus/iverilog/pull/148
+if [ $ARCH == "windows_amd64" ]; then
+  sed -i "s/___strtod/__strtod/g" aclocal.m4
 fi
 
-if [ $ARCH == "linux_armv7l" ]; then
-  #-- Generate the new configure
-  autoconf
-
-  # Prepare for building
-  ./configure --host="arm-linux-gnueabihf" LDFLAGS="-static-libstdc++"
-
-  # Apply cross-execution patch
-  sed -i 's/.\/version.exe `/qemu-arm -L \/usr\/arm-linux-gnueabihf\/ version.exe `/g' Makefile Makefile.in
-  sed -i 's/..\/version.exe `/qemu-arm -L \/usr\/arm-linux-gnueabihf\/ ..\/version.exe `/g' driver/Makefile driver/Makefile.in
-  sed -i 's/..\/version.exe `/qemu-arm -L \/usr\/arm-linux-gnueabihf\/ ..\/version.exe `/g' vvp/Makefile vvp/Makefile.in
-  sed -i 's/.\/draw_tt.exe/qemu-arm -L \/usr\/arm-linux-gnueabihf\/ draw_tt.exe/g' vvp/Makefile
-
-  # -- Compile it
-  make -j$J
-
-  # Make iverilog static
-  cd driver
-  make clean
-  make -j$J LDFLAGS="-static"
-  cd ..
+if [ $ARCH != "darwin" ]; then
+  export CC=$HOST-gcc
+  export CXX=$HOST-g++
 fi
 
-if [ $ARCH == "linux_aarch64" ]; then
-  #-- Generate the new configure
-  autoconf
+# -- Generate the new configure
+sh autoconf.sh
 
-  # Prepare for building
-  ./configure --host="aarch64-linux-gnu" LDFLAGS="-static-libstdc++"
+# -- Prepare for building
+./configure --build=$BUILD --host=$HOST CFLAGS="$CONFIG_CFLAGS" CXXFLAGS="$CONFIG_CFLAGS" LDFLAGS="$CONFIG_LDFLAGS" $CONFIG_FLAGS
 
-  # Apply cross-execution patch
-  sed -i 's/.\/version.exe `/qemu-aarch64 -L \/usr\/aarch64-linux-gnu\/ version.exe `/g' Makefile Makefile.in
-  sed -i 's/..\/version.exe `/qemu-aarch64 -L \/usr\/aarch64-linux-gnu\/ ..\/version.exe `/g' driver/Makefile driver/Makefile.in
-  sed -i 's/..\/version.exe `/qemu-aarch64 -L \/usr\/aarch64-linux-gnu\/ ..\/version.exe `/g' vvp/Makefile vvp/Makefile.in
-  sed -i 's/.\/draw_tt.exe/qemu-aarch64 -L \/usr\/aarch64-linux-gnu\/ draw_tt.exe/g' vvp/Makefile
+# -- Compile it
+make -j$J
 
-  # -- Compile it
-  make -j$J
-
-  # Make iverilog static
-  cd driver
-  make clean
-  make -j$J LDFLAGS="-static"
-  cd ..
-fi
-
-if [ $ARCH == "windows" ]; then
-  #-- Generate the new configure
-  autoconf
-
-  # Prepare for building
-  ./configure --host="i686-w64-mingw32" LDFLAGS="-static"
-
-  # -- Compile it
-  make -j$J
-fi
-
-if [ $ARCH == "darwin" ]; then
-  #-- Generate the new configure
-  sh autoconf.sh
-
-  # Prepare for building
-  ./configure
-
-  # -- Compile it
-  make -j$J
+# -- Make binaries static
+if [ ${ARCH:0:5} == "linux" ]; then
+  SUBDIRS="driver"
+  for SUBDIR in ${SUBDIRS[@]}
+  do
+    make -C $SUBDIR clean
+    make -C $SUBDIR -j$J LDFLAGS="$MAKE_LDFLAGS"
+  done
 fi
 
 # -- Test the generated executables
 if [ $ARCH != "darwin" ]; then
-  test_bin driver/iverilog$EXT
+  test_bin driver/iverilog$EXE
 fi
 
 # -- Install the programs into the package folder
