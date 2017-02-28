@@ -1,5 +1,7 @@
 # Toolchain-iverilog
 
+[![Build Status](https://travis-ci.org/FPGAwars/toolchain-iverilog.svg?branch=v1.1.0)](https://travis-ci.org/FPGAwars/toolchain-iverilog)
+
 ## Introduction
 
 Static binaries of the [Icarus Verilog](http://iverilog.icarus.com) tools. Packaged for [Apio](https://github.com/FPGAwars/apio) and [Platformio](http://platformio.org/).
