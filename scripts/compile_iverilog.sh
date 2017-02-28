@@ -47,7 +47,7 @@ make -j$J
 
 # -- Make binaries static
 if [ ${ARCH:0:5} == "linux" ]; then
-  SUBDIRS="driver ivlpp vvp"
+  SUBDIRS="driver"
   for SUBDIR in ${SUBDIRS[@]}
   do
     make -C $SUBDIR clean
@@ -58,8 +58,6 @@ fi
 # -- Test the generated executables
 if [ $ARCH != "darwin" ]; then
   test_bin driver/iverilog$EXE
-  test_bin ivlpp/ivlpp$EXE
-  test_bin vvp/vvp$EXE
 fi
 
 # -- Install the programs into the package folder
