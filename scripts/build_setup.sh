@@ -17,6 +17,14 @@ if [ $ARCH == "linux_i686" ]; then
   MAKE_LDFLAGS="-m32 -static"
 fi
 
+if [ $ARCH == "linux_armv6l" ]; then
+  HOST="arm-linux-gnueabihf"
+  CONFIG_CFLAGS="-O2 -marm -march=armv6"
+  CONFIG_CXXFLAGS="-O2 -marm -march=armv6"
+  CONFIG_LDFLAGS="-static-libstdc++"
+  MAKE_LDFLAGS="-static"
+fi
+
 if [ $ARCH == "linux_armv7l" ]; then
   HOST="arm-linux-gnueabihf"
   CONFIG_CFLAGS="-O2"
