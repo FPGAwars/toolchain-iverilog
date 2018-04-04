@@ -1,8 +1,6 @@
 sudo: required
 dist: trusty
-
 language: cpp
-
 matrix:
   include:
     - os: linux
@@ -19,20 +17,17 @@ matrix:
       env: TARGET=windows_amd64
     - os: osx
       env: TARGET=darwin
-
 before_script:
   - if [[ ${TARGET:0:7} == "windows" ]]; then sudo dpkg --add-architecture i386; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -y -qq; fi
-
 script:
   - bash build.sh $TARGET
   - openssl sha1 _packages/**/*.tar.gz
-
 deploy:
   provider: releases
   api_key:
-    secure: l49LgCQEzCZ4inYjQGPFFl7IGEj54zgX2gzp2CEWHaH0Oe4T08OzzVLHgE9e84ssYzC7l3Ic/+BJVRMHIcp3m6h2QDbrX3jdnRLQjzGn/MWSosMGsu653MEuXO7ZU0ug/4GEyh7SOWAGmsLghg3iT1wH4yC3GaDP3ZjL7u4o3CBls9LRFUAZw2HHYtn4enIgPqtjpG34CpMoTgETjL5xTFtqFSFw2KPwDD3ZN2vWo464m1cVLmEJu4vV+bytzcD1hYcPnSYQduKKvGqiQUV0n5gHR+pAhmawNr6s0lCdQ1klwNzJof7UFjFC7tnQUOpnj8O2rzO1/1FgziMNC/xImW2spUo6BZVCl9GoLBq3Pkvy0mHC9jN6EKeNos1+MlTBSIMPZNCMNdt82ioKM0scpze4QgxmJM4bN9Ag+w9t+s1L/omAjoGoVKksY5dkatnt8iRW+0dDpau8Wf3qjmmAKET/P6vC5tssimLl8rg7H78rz+9bDq4Q4+Oq2XOPEsLNfk/Yqt9URKdexcfvFSm9Eg4Y9H5j1ek2eSeFEFwP75HjkLPlH5ViPpVt+sCmm7NGiNiZBPBdVCeOAyRka62JifW+mxjtZ5E3tTZPDE24kBAUK9XXmlsrGAfS7zOZ6vHcuhkRxrGN6SKIErUtQGUnil5mlnrBUo0v1AXRwwhae5I=
+    secure: YiogwNiQQEStkOc/bE8Bp0OD448z26WUQhWBmt7afd1Ll8uUJijFrHpioWZ6qJsJWfwj+wqOXgeXacvspOkDbAwjbv6kCJNnbg4UNRqTWH72h60Nen6Vhw/p7CY9sv2Oz/cwSt1y/1BsreoAsonHEneAfF8OauBifg+w+UXYw/2CHTkkhnmbqL6swX5g37He3I6rMrYQvVC5OQl2ACYa6GziugnMAXm1InsomffEdtuwJLmu/HJlsXSC7sdNtg7ydRBHXGH9L8HGlT2XxvLcm8ynZSIUUPQZ6rEaw1ozqE/tHuCvqgr4ZP0F+zUjBDqsF2iRaU6SDtG3dPA3phkdu4ZrjQ6tMgkVeao9xKEyNl6go8MT1tdjb0tzj49KWuHoeJuiMl4po+03A/3xvC1xEn5DXyyQTZj04rsJ2aEUod+dvm0P7oTesSfPQus76HkEKHBS1OoIMa6jmD8jInYzKyeJLX4Shr8VnRfrS/14FFQElgkPe6uRPdnoKwcl7kSl6Q02OpLpxiIjbWOELQVvCSNiWDbqdG53pCDwHhh5vvXFVDKQaGSrNQoYM0XuO/Hgl8xl/rLpBB05WcsC3GHypVWMyJLj6LDg9G4KEICRuhap4CcorjX3MJLmLK3O3wN/0P7Oyh6e4OpknpWRjjPl+TzbSk2Y2PGoJwIQdhHdGQ4=
   file:
     - _packages/**/*.tar.gz
   file_glob: true
