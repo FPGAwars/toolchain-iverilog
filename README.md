@@ -1,6 +1,6 @@
 # Toolchain-iverilog
 
-[![Build Status](https://travis-ci.org/FPGAwars/toolchain-iverilog.svg?branch=v1.1.0)](https://travis-ci.org/FPGAwars/toolchain-iverilog)
+[![Build Status](https://travis-ci.org/FPGAwars/toolchain-iverilog.svg)](https://travis-ci.org/FPGAwars/toolchain-iverilog)
 
 ## Introduction
 
@@ -34,6 +34,10 @@ Final packages will be deployed in the **\_packages/build_ARCH/** directories.
 ## Authors
 
 * [Jesús Arroyo Torrens](https://github.com/Jesus89)
+
+## Collaborators
+
+* [Miodrag Milanovic](https://github.com/mmicko)
 
 ## License
 
