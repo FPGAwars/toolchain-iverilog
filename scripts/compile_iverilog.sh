@@ -53,6 +53,15 @@ fi
 # -- Test the generated executables
 if [ $ARCH != "darwin" ]; then
   test_bin driver/iverilog$EXE
+  test_bin vvp/vvp$EXE
+fi
+
+if [ $ARCH == "linux" ]; then
+  test_bin iverilog-vpi
+fi
+
+if [ $ARCH == "windows" ]; then
+  test_bin driver-vpi/iverilog-vpi$EXE
 fi
 
 # -- Install the programs into the package folder
