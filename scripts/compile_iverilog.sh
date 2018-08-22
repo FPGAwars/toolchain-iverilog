@@ -47,7 +47,7 @@ make -j$J
 
 # -- Make binaries static
 if [ ${ARCH:0:5} == "linux" ]; then
-  SUBDIRS="driver"
+  SUBDIRS="driver vvp"
   for SUBDIR in ${SUBDIRS[@]}
   do
     make -C $SUBDIR clean
