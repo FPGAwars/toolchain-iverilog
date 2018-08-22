@@ -26,6 +26,11 @@ if [ ${ARCH:0:7} == "linux_a" ]; then
   export QEMU_LD_PREFIX=/usr/$HOST
 fi
 
+# -- Patch __strtod: https://github.com/steveicarus/iverilog/pull/148
+if [ $ARCH == "windows_amd64" ]; then
+  sed -i "s/___strtod/__strtod/g" aclocal.m4
+fi
+
 if [ $ARCH != "darwin" ]; then
   export CC=$HOST-gcc
   export CXX=$HOST-g++
