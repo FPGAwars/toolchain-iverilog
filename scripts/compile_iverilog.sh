@@ -39,6 +39,12 @@ fi
 # -- Generate the new configure
 sh autoconf.sh
 
+# -- Force not to use libreadline and libhistory
+if [ ${ARCH:0:5} == "linux" ]; then
+  sed -i "s/ac_cv_lib_readline_readline=yes/ac_cv_lib_readline_readline=no/g" configure
+  sed -i "s/ac_cv_lib_history_add_history=yes/ac_cv_lib_history_add_history=no/g" configure
+fi
+
 # -- Prepare for building
 ./configure --build=$BUILD --host=$HOST CFLAGS="$CONFIG_CFLAGS" CXXFLAGS="$CONFIG_CFLAGS" LDFLAGS="$CONFIG_LDFLAGS" $CONFIG_FLAGS
 
@@ -47,7 +53,7 @@ make -j$J
 
 # -- Make binaries static
 if [ ${ARCH:0:5} == "linux" ]; then
-  SUBDIRS="driver vvp"
+  SUBDIRS="driver"
   for SUBDIR in ${SUBDIRS[@]}
   do
     make -C $SUBDIR clean
@@ -58,15 +64,6 @@ fi
 # -- Test the generated executables
 if [ $ARCH != "darwin" ]; then
   test_bin driver/iverilog$EXE
-  test_bin vvp/vvp$EXE
-fi
-
-if [ $ARCH == "linux" ]; then
-  test_bin iverilog-vpi
-fi
-
-if [ $ARCH == "windows" ]; then
-  test_bin driver-vpi/iverilog-vpi$EXE
 fi
 
 # -- Install the programs into the package folder
