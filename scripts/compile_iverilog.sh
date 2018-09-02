@@ -43,6 +43,7 @@ sh autoconf.sh
 if [ ${ARCH:0:5} == "linux" ]; then
   sed -i "s/ac_cv_lib_readline_readline=yes/ac_cv_lib_readline_readline=no/g" configure
   sed -i "s/ac_cv_lib_history_add_history=yes/ac_cv_lib_history_add_history=no/g" configure
+  sed -i "s/ac_cv_lib_pthread_pthread_create=yes/ac_cv_lib_pthread_pthread_create=no/g" configure
 fi
 
 # -- Prepare for building
@@ -53,12 +54,8 @@ make -j$J
 
 # -- Make binaries static
 if [ ${ARCH:0:5} == "linux" ]; then
-  SUBDIRS="driver"
-  for SUBDIR in ${SUBDIRS[@]}
-  do
-    make -C $SUBDIR clean
-    make -C $SUBDIR -j$J LDFLAGS="$MAKE_LDFLAGS"
-  done
+  make -C driver clean
+  make -C driver -j$J LDFLAGS="$MAKE_LDFLAGS"
 fi
 
 # -- Test the generated executables
