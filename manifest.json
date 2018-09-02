@@ -2,6 +2,132 @@
   "toolchain-iverilog":
     [
       {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.2.1/toolchain-iverilog-darwin-1.2.1.tar.gz",
+        "sha1": "630686c6b66fdfc645218ff27f06491de413ad0a",
+        "version": "1.2.1",
+        "system": ["darwin", "darwin_x86_64", "darwin_i386"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.2.1/toolchain-iverilog-linux_aarch64-1.2.1.tar.gz",
+        "sha1": "f62f6b2d9414c77b9555106e7f66b4a512977df2",
+        "version": "1.2.1",
+        "system": ["linux_aarch64"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.2.1/toolchain-iverilog-linux_armv7l-1.2.1.tar.gz",
+        "sha1": "54d77e32ef0da8528012607bf29ee837325c0a69",
+        "version": "1.2.1",
+        "system": ["linux_armv7l"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.2.1/toolchain-iverilog-linux_i686-1.2.1.tar.gz",
+        "sha1": "45cb75fc3e3ab674b68186236e52c25154b579b4",
+        "version": "1.2.1",
+        "system": ["linux_i686"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.2.1/toolchain-iverilog-linux_x86_64-1.2.1.tar.gz",
+        "sha1": "26c3ebcb08f99650bbf243eb2dd964d284357d90",
+        "version": "1.2.1",
+        "system": ["linux_x86_64"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.2.1/toolchain-iverilog-windows_x86-1.2.1.tar.gz",
+        "sha1": "042e5594e9b318a6ce87093c5d690166e1f8d11e",
+        "version": "1.2.1",
+        "system": ["windows", "windows_x86"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.2.1/toolchain-iverilog-windows_amd64-1.2.1.tar.gz",
+        "sha1": "940c1e78abdf772d552ff8f52e3c56e95a549163",
+        "version": "1.2.1",
+        "system": ["windows_amd64"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.2.0/toolchain-iverilog-darwin-1.2.0.tar.gz",
+        "sha1": "6b18c938382ed93b789f506340af923fe290fbe9",
+        "version": "1.2.0",
+        "system": ["darwin", "darwin_x86_64", "darwin_i386"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.2.0/toolchain-iverilog-linux_aarch64-1.2.0.tar.gz",
+        "sha1": "1cbe3001d9ffac51c66021f9c93758a72d278900",
+        "version": "1.2.0",
+        "system": ["linux_aarch64"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.2.0/toolchain-iverilog-linux_armv7l-1.2.0.tar.gz",
+        "sha1": "d5248b7ad1ec90f9dadd4102f809e772490274c2",
+        "version": "1.2.0",
+        "system": ["linux_armv7l"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.2.0/toolchain-iverilog-linux_i686-1.2.0.tar.gz",
+        "sha1": "982e21912996d5d3d0e8d276a52ec7219d7312f7",
+        "version": "1.2.0",
+        "system": ["linux_i686"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.2.0/toolchain-iverilog-linux_x86_64-1.2.0.tar.gz",
+        "sha1": "f4a5b920757c44c0800524fd414867634c786d61",
+        "version": "1.2.0",
+        "system": ["linux_x86_64"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.2.0/toolchain-iverilog-windows_x86-1.2.0.tar.gz",
+        "sha1": "aa4c761eebfbcb18e16950dde89fdc057c2b7cbd",
+        "version": "1.2.0",
+        "system": ["windows", "windows_x86"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.2.0/toolchain-iverilog-windows_amd64-1.2.0.tar.gz",
+        "sha1": "bf635d53e525cd0b3cee7140cc3f1c14a7e0f942",
+        "version": "1.2.0",
+        "system": ["windows_amd64"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.1.1/toolchain-iverilog-darwin-1.1.1.tar.gz",
+        "sha1": "3b7a608dc9e3e9923d2be7f89294cd401120f32a",
+        "version": "1.1.1",
+        "system": ["darwin", "darwin_x86_64", "darwin_i386"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.1.1/toolchain-iverilog-linux_aarch64-1.1.1.tar.gz",
+        "sha1": "1972d5c74bbc1d7547f5c3a59fcdf9c01de6b5ee",
+        "version": "1.1.1",
+        "system": ["linux_aarch64"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.1.1/toolchain-iverilog-linux_armv7l-1.1.1.tar.gz",
+        "sha1": "8285b6766674fdd8303a4f27db9ff82c267764f5",
+        "version": "1.1.1",
+        "system": ["linux_armv7l"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.1.1/toolchain-iverilog-linux_i686-1.1.1.tar.gz",
+        "sha1": "29cdd7a42a76818cbc596d6b331c8b79823a8318",
+        "version": "1.1.1",
+        "system": ["linux_i686"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.1.1/toolchain-iverilog-linux_x86_64-1.1.1.tar.gz",
+        "sha1": "9cfb2f58d3f29d5d2a9131fecd0d250c6508f14a",
+        "version": "1.1.1",
+        "system": ["linux_x86_64"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.1.1/toolchain-iverilog-windows_x86-1.1.1.tar.gz",
+        "sha1": "fc1923497bbb4b55f2067d5164da97f7f9ed32f4",
+        "version": "1.1.1",
+        "system": ["windows", "windows_x86"]
+      },
+      {
+        "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.1.1/toolchain-iverilog-windows_amd64-1.1.1.tar.gz",
+        "sha1": "a618fcfb54f76640befa9da79b6f940e758703e9",
+        "version": "1.1.1",
+        "system": ["windows_amd64"]
+      },
+      {
         "url": "https://github.com/FPGAwars/toolchain-iverilog/releases/download/v1.1.0/toolchain-iverilog-darwin-1.1.0.tar.gz",
         "sha1": "39918c8d0a489cbf86446076561128af13173282",
         "version": "1.1.0",
