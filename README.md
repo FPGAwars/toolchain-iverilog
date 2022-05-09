@@ -1,3 +1,8 @@
+# Archived!
+* **2022-May-9**: This repo has been archived, since the iverilog is no longer used as an isolated Apio package. Use the [Tools-oss-cad-suite](https://github.com/FPGAwars/tools-oss-cad-suite) package instead
+
+---------
+
 # Toolchain-iverilog
 
 [![Build Status](https://travis-ci.org/FPGAwars/toolchain-iverilog.svg)](https://travis-ci.org/FPGAwars/toolchain-iverilog)
